@@ -15,15 +15,16 @@ import Toggle from "../../components/Toggle";
 import appendNewToName from "../../utils/appendNewToName";
 import downloadPhoto from "../../utils/downloadPhoto";
 import DropDown from "../../components/DropDown";
-import { roomType, rooms, themeType, themes } from "../../utils/dropdownTypes";
+import { themeType, themes } from "../../utils/dropdownTypes";
+import { Button } from "../../components/ui/button";
 
 const options: UploadWidgetConfig = {
   apiKey: !!process.env.NEXT_PUBLIC_UPLOAD_API_KEY
-      ? process.env.NEXT_PUBLIC_UPLOAD_API_KEY
-      : "free",
+    ? process.env.NEXT_PUBLIC_UPLOAD_API_KEY
+    : "free",
   maxFileCount: 1,
   mimeTypes: ["image/jpeg", "image/png", "image/jpg"],
-  editor: { images: { crop: false } },
+  // editor: { images: { crop: false } },
   styles: {
     colors: {
       primary: "#2563EB", // Primary buttons & links
@@ -49,8 +50,7 @@ export default function DreamPage() {
   const [sideBySide, setSideBySide] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [photoName, setPhotoName] = useState<string | null>(null);
-  const [theme, setTheme] = useState<themeType>("Modern");
-  const [room, setRoom] = useState<roomType>("Living Room");
+  const [theme, setTheme] = useState<themeType>("Woman");
 
   const UploadDropZone = () => (
     <UploadDropzone
@@ -64,8 +64,8 @@ export default function DreamPage() {
             filePath: image.filePath,
             options: {
               transformation: "preset",
-              transformationPreset: "thumbnail"
-            }
+              transformationPreset: "thumbnail",
+            },
           });
           setPhotoName(imageName);
           setOriginalPhoto(imageUrl);
@@ -77,7 +77,7 @@ export default function DreamPage() {
     />
   );
 
-  async function generatePhoto(fileUrl: string) {
+  async function generatePhoto(fileUrl?: string) {
     await new Promise((resolve) => setTimeout(resolve, 200));
     setLoading(true);
     const res = await fetch("/generate", {
@@ -85,14 +85,14 @@ export default function DreamPage() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ imageUrl: fileUrl, theme, room }),
+      body: JSON.stringify({ imageUrl: fileUrl ? fileUrl : "", theme }),
     });
-
     let newPhoto = await res.json();
     if (res.status !== 200) {
       setError(newPhoto);
     } else {
-      setRestoredImage(newPhoto[1]);
+      console.log("newPhoto", newPhoto);
+      setRestoredImage(newPhoto[0]);
     }
     setTimeout(() => {
       setLoading(false);
@@ -104,7 +104,8 @@ export default function DreamPage() {
       <Header />
       <main className="flex flex-1 w-full flex-col items-center justify-center text-center px-4 mt-4 sm:mb-0 mb-8">
         <h1 className="mx-auto max-w-4xl font-display text-4xl font-bold tracking-normal text-slate-100 sm:text-6xl mb-5">
-          Generate your <span className="text-blue-600">dream</span> room
+          Generate your photo in{" "}
+          <span className="text-blue-600">80s style</span>
         </h1>
         <ResizablePanel>
           <AnimatePresence mode="wait">
@@ -119,9 +120,7 @@ export default function DreamPage() {
                         height={30}
                         alt="1 icon"
                       />
-                      <p className="text-left font-medium">
-                        Choose your room theme.
-                      </p>
+                      <p className="text-left font-medium">Gender</p>
                     </div>
                     <DropDown
                       theme={theme}
@@ -131,50 +130,37 @@ export default function DreamPage() {
                       themes={themes}
                     />
                   </div>
-                  <div className="space-y-4 w-full max-w-sm">
-                    <div className="flex mt-10 items-center space-x-3">
+                  <Button
+                    onClick={() => generatePhoto()}
+                    className="bg-blue-600 self-center text-lg rounded-xl text-white font-medium px-10 py-8 mt-8 hover:bg-blue-500 transition">
+                    generate your image
+                  </Button>
+                  <h2>or...</h2>
+                  <div className="mt-4 w-full max-w-sm">
+                    <div className="flex mt-6 w-96 items-center space-x-3">
                       <Image
                         src="/number-2-white.svg"
                         width={30}
                         height={30}
-                        alt="1 icon"
+                        alt="2 icon"
                       />
                       <p className="text-left font-medium">
-                        Choose your room type.
-                      </p>
-                    </div>
-                    <DropDown
-                      theme={room}
-                      setTheme={(newRoom) => setRoom(newRoom as typeof room)}
-                      themes={rooms}
-                    />
-                  </div>
-                  <div className="mt-4 w-full max-w-sm">
-                    <div className="flex mt-6 w-96 items-center space-x-3">
-                      <Image
-                        src="/number-3-white.svg"
-                        width={30}
-                        height={30}
-                        alt="1 icon"
-                      />
-                      <p className="text-left font-medium">
-                        Upload a picture of your room.
+                        Upload your picture.
                       </p>
                     </div>
                   </div>
                 </>
               )}
-              {restoredImage && (
+              {/* {restoredImage && (
                 <div>
-                  Here's your remodeled <b>{room.toLowerCase()}</b> in the{" "}
-                  <b>{theme.toLowerCase()}</b> theme!{" "}
+                  Here's your remodeled in the <b>{theme.toLowerCase()}</b>{" "}
+                  theme!{" "}
                 </div>
-              )}
+              )} */}
               <div
                 className={`${
                   restoredLoaded ? "visible mt-6 -ml-8" : "invisible"
-                }`}
-              >
+                }`}>
                 <Toggle
                   className={`${restoredLoaded ? "visible mb-6" : "invisible"}`}
                   sideBySide={sideBySide}
@@ -187,7 +173,12 @@ export default function DreamPage() {
                   restored={restoredImage!}
                 />
               )}
-              {!originalPhoto && <UploadDropZone />}
+
+              {!restoredImage && (
+                <div className="flex flex-col w-full max-w-[600px]">
+                  <UploadDropZone />
+                </div>
+              )}
               {originalPhoto && !restoredImage && (
                 <Image
                   alt="original photo"
@@ -197,9 +188,9 @@ export default function DreamPage() {
                   height={475}
                 />
               )}
-              {restoredImage && originalPhoto && !sideBySide && (
+              {restoredImage && (
                 <div className="flex sm:space-x-4 sm:flex-row flex-col">
-                  <div>
+                  {/* <div>
                     <h2 className="mb-1 font-medium text-lg">Original Room</h2>
                     <Image
                       alt="original photo"
@@ -208,9 +199,11 @@ export default function DreamPage() {
                       width={475}
                       height={475}
                     />
-                  </div>
+                  </div> */}
                   <div className="sm:mt-0 mt-8">
-                    <h2 className="mb-1 font-medium text-lg">Generated Room</h2>
+                    <h2 className="mb-1 font-medium text-lg">
+                      Generated Image
+                    </h2>
                     <a href={restoredImage} target="_blank" rel="noreferrer">
                       <Image
                         alt="restored photo"
@@ -227,8 +220,7 @@ export default function DreamPage() {
               {loading && (
                 <button
                   disabled
-                  className="bg-blue-500 rounded-full text-white font-medium px-4 pt-2 pb-3 mt-8 w-40"
-                >
+                  className="bg-blue-500 rounded-full text-white font-medium px-4 pt-2 pb-3 mt-8 w-40">
                   <span className="pt-4">
                     <LoadingDots color="white" style="large" />
                   </span>
@@ -237,8 +229,7 @@ export default function DreamPage() {
               {error && (
                 <div
                   className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl mt-8"
-                  role="alert"
-                >
+                  role="alert">
                   <span className="block sm:inline">{error}</span>
                 </div>
               )}
@@ -251,9 +242,8 @@ export default function DreamPage() {
                       setRestoredLoaded(false);
                       setError(null);
                     }}
-                    className="bg-blue-500 rounded-full text-white font-medium px-4 py-2 mt-8 hover:bg-blue-500/80 transition"
-                  >
-                    Generate New Room
+                    className="bg-blue-500 rounded-full text-white font-medium px-4 py-2 mt-8 hover:bg-blue-500/80 transition">
+                    Generate New Image
                   </button>
                 )}
                 {restoredLoaded && (
@@ -264,9 +254,8 @@ export default function DreamPage() {
                         appendNewToName(photoName!)
                       );
                     }}
-                    className="bg-white rounded-full text-black border font-medium px-4 py-2 mt-8 hover:bg-gray-100 transition"
-                  >
-                    Download Generated Room
+                    className="bg-white rounded-full text-black border font-medium px-4 py-2 mt-8 hover:bg-gray-100 transition">
+                    Download Generated Image
                   </button>
                 )}
               </div>
