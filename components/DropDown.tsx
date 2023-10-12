@@ -5,16 +5,16 @@ import {
   ChevronUpIcon,
 } from "@heroicons/react/20/solid";
 import { Fragment } from "react";
-import { roomType, themeType } from "../utils/dropdownTypes";
+import { themeType } from "../utils/dropdownTypes";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
 interface DropDownProps {
-  theme: themeType | roomType;
-  setTheme: (theme: themeType | roomType) => void;
-  themes: themeType[] | roomType[];
+  theme: themeType;
+  setTheme: (theme: themeType) => void;
+  themes: themeType[];
 }
 
 // TODO: Change names since this is a generic dropdown now
@@ -42,12 +42,10 @@ export default function DropDown({ theme, setTheme, themes }: DropDownProps) {
         enterTo="transform opacity-100 scale-100"
         leave="transition ease-in duration-75"
         leaveFrom="transform opacity-100 scale-100"
-        leaveTo="transform opacity-0 scale-95"
-      >
+        leaveTo="transform opacity-0 scale-95">
         <Menu.Items
           className="absolute left-0 z-10 mt-2 w-full origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none overflow-hidden"
-          key={theme}
-        >
+          key={theme}>
           <div className="">
             {themes.map((themeItem) => (
               <Menu.Item key={themeItem}>
@@ -58,8 +56,7 @@ export default function DropDown({ theme, setTheme, themes }: DropDownProps) {
                       active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                       themeItem === theme ? "bg-gray-200" : "",
                       "px-4 py-2 text-sm w-full text-left flex items-center space-x-2 justify-between"
-                    )}
-                  >
+                    )}>
                     <span>{themeItem}</span>
                     {themeItem === theme ? (
                       <CheckIcon className="w-4 h-4 text-bold" />
