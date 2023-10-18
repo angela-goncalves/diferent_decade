@@ -1,3 +1,3 @@
-export type themeType = "Woman" | "Man" | "Person";
+export type genderType = "Woman" | "Man" | "Person";
 
-export const themes: themeType[] = ["Woman", "Man", "Person"];
+export const genders: genderType[] = ["Woman", "Man", "Person"];

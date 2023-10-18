@@ -1,17 +1,18 @@
 import { Analytics } from "@vercel/analytics/react";
 import { Metadata } from "next";
 import "../styles/globals.css";
+import { ThemeProvider } from "../components/ThemeProvider";
 
-let title = "Dream Room Generator";
-let description = "Generate your dream room in seconds.";
+let title = "Photo Generator";
+let description = "Generate your 80s look ";
 let ogimage = "https://roomgpt-demo.vercel.app/og-image.png";
-let sitename = "roomGPT.io";
+let sitename = "diferent-decade";
 
 export const metadata: Metadata = {
   title,
   description,
   icons: {
-    icon: "/favicon.ico",
+    icon: "/favicon.svg",
   },
   openGraph: {
     images: [ogimage],
@@ -36,9 +37,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className="bg-[#17181C] text-white">
-        {children}
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange>
+          {" "}
+          {children}
+        </ThemeProvider>
         <Analytics />
       </body>
     </html>

@@ -1,29 +1,57 @@
+"use client";
 import Image from "next/image";
-import Link from "next/link";
+import { Moon, Sun } from "lucide-react";
+import { Button } from "./ui/button";
+import { useTheme } from "next-themes";
+import { useState } from "react";
+import { LinkCust } from "./ui/link";
 
 export default function Header() {
+  const { setTheme } = useTheme();
+  const [darkMode, setDarkMode] = useState<boolean>(false);
+
   return (
-    <header className="flex flex-col xs:flex-row justify-between items-center w-full mt-3 border-b pb-7 sm:px-4 px-2 border-gray-500 gap-2">
-      <Link href="/" className="flex space-x-2">
-        {/* <Image
+    <header className="flex xs:flex-row justify-between items-center w-full mt-3 border-b pb-7 sm:px-4 px-2 border-gray-500 gap-2">
+      <LinkCust href="/" className="flex space-x-2">
+        <Image
           alt="header text"
-          src="/bed.svg"
+          src="/eighty.svg"
           className="sm:w-10 sm:h-10 w-9 h-9"
           width={24}
           height={24}
-        /> */}
-        <h1 className="sm:text-3xl text-xl font-bold ml-2 tracking-tight">
+        />
+        <h1 className="sm:text-3xl text-xl font-bold ml-2 tracking-tight underline underline-offset-4">
           diferent-decade.io
         </h1>
-      </Link>
-      <a
-        className="flex max-w-fit items-center justify-center space-x-2 rounded-full border border-blue-600 text-white px-5 py-2 text-sm shadow-md hover:bg-blue-500 bg-blue-600 font-medium transition"
+      </LinkCust>
+      <LinkCust
+        className="flex max-w-fit items-center justify-center space-x-2 rounded-full text-xs"
         href="https://github.com/angela-goncalves/diferent_decade"
         target="_blank"
         rel="noopener noreferrer">
         <Github />
         <p>Star on GitHub</p>
-      </a>
+      </LinkCust>
+      {!darkMode && (
+        <Button
+          size="icon"
+          onClick={() => {
+            setTheme("light");
+            setDarkMode(true);
+          }}>
+          <Sun className="h-[1.2rem] w-[1.2rem]" />
+        </Button>
+      )}
+      {darkMode && (
+        <Button
+          size="icon"
+          onClick={() => {
+            setTheme("dark");
+            setDarkMode(false);
+          }}>
+          <Moon className="h-[1.2rem] w-[1.2rem]" />
+        </Button>
+      )}
     </header>
   );
 }

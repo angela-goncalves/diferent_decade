@@ -15,8 +15,8 @@ import Toggle from "../../components/Toggle";
 import appendNewToName from "../../utils/appendNewToName";
 import downloadPhoto from "../../utils/downloadPhoto";
 import DropDown from "../../components/DropDown";
-import { themeType, themes } from "../../utils/dropdownTypes";
-import { Button } from "../../components/ui/button";
+import { genderType, genders } from "../../utils/dropdownTypes";
+import { useTheme } from "next-themes";
 
 const options: UploadWidgetConfig = {
   apiKey: !!process.env.NEXT_PUBLIC_UPLOAD_API_KEY
@@ -24,17 +24,17 @@ const options: UploadWidgetConfig = {
     : "free",
   maxFileCount: 1,
   mimeTypes: ["image/jpeg", "image/png", "image/jpg"],
-  // editor: { images: { crop: false } },
+  editor: { images: { crop: false } },
   styles: {
     colors: {
-      primary: "#2563EB", // Primary buttons & links
+      primary: "#B736F3", // Primary buttons & links
       error: "#d23f4d", // Error messages
       shade100: "#fff", // Standard text
       shade200: "#fffe", // Secondary button text
       shade300: "#fffd", // Secondary button text (hover)
       shade400: "#fffc", // Welcome text
       shade500: "#fff9", // Modal close button
-      shade600: "#fff7", // Border
+      shade600: "#1C19C6", // Border
       shade700: "#fff2", // Progress indicator background
       shade800: "#fff1", // File item background
       shade900: "#ffff", // Various (draggable crop buttons, etc.)
@@ -50,7 +50,9 @@ export default function DreamPage() {
   const [sideBySide, setSideBySide] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [photoName, setPhotoName] = useState<string | null>(null);
-  const [theme, setTheme] = useState<themeType>("Woman");
+  const [gender, setGender] = useState<genderType>("Woman");
+  const { setTheme } = useTheme();
+  const [darkMode, setDarkMode] = useState<boolean>(false);
 
   const UploadDropZone = () => (
     <UploadDropzone
@@ -85,27 +87,27 @@ export default function DreamPage() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ imageUrl: fileUrl ? fileUrl : "", theme }),
+      body: JSON.stringify({ originalPhoto: fileUrl, theme: gender }),
     });
     let newPhoto = await res.json();
     if (res.status !== 200) {
       setError(newPhoto);
     } else {
       console.log("newPhoto", newPhoto);
-      setRestoredImage(newPhoto[0]);
+      setRestoredImage(newPhoto);
     }
     setTimeout(() => {
       setLoading(false);
     }, 1300);
   }
-
+  console.log(typeof restoredImage);
   return (
     <div className="flex max-w-6xl mx-auto flex-col items-center justify-center py-2 min-h-screen">
       <Header />
       <main className="flex flex-1 w-full flex-col items-center justify-center text-center px-4 mt-4 sm:mb-0 mb-8">
-        <h1 className="mx-auto max-w-4xl font-display text-4xl font-bold tracking-normal text-slate-100 sm:text-6xl mb-5">
+        <h1 className="mx-auto max-w-4xl font-display text-4xl font-bold tracking-normal sm:text-6xl mb-5">
           Generate your photo in{" "}
-          <span className="text-blue-600">80s style</span>
+          <span className="text-secondary">80s style</span>
         </h1>
         <ResizablePanel>
           <AnimatePresence mode="wait">
@@ -123,19 +125,19 @@ export default function DreamPage() {
                       <p className="text-left font-medium">Gender</p>
                     </div>
                     <DropDown
-                      theme={theme}
-                      setTheme={(newTheme) =>
-                        setTheme(newTheme as typeof theme)
+                      gender={gender}
+                      setGender={(newTheme) =>
+                        setGender(newTheme as typeof gender)
                       }
-                      themes={themes}
+                      genders={genders}
                     />
                   </div>
-                  <Button
+                  {/* <Button
                     onClick={() => generatePhoto()}
                     className="bg-blue-600 self-center text-lg rounded-xl text-white font-medium px-10 py-8 mt-8 hover:bg-blue-500 transition">
                     generate your image
                   </Button>
-                  <h2>or...</h2>
+                  <h2>or...</h2> */}
                   <div className="mt-4 w-full max-w-sm">
                     <div className="flex mt-6 w-96 items-center space-x-3">
                       <Image
@@ -151,12 +153,12 @@ export default function DreamPage() {
                   </div>
                 </>
               )}
-              {/* {restoredImage && (
+              {restoredImage && (
                 <div>
-                  Here's your remodeled in the <b>{theme.toLowerCase()}</b>{" "}
+                  Here's your remodeled in the <b>{gender.toLowerCase()}</b>{" "}
                   theme!{" "}
                 </div>
-              )} */}
+              )}
               <div
                 className={`${
                   restoredLoaded ? "visible mt-6 -ml-8" : "invisible"
@@ -188,9 +190,9 @@ export default function DreamPage() {
                   height={475}
                 />
               )}
-              {restoredImage && (
+              {restoredImage && originalPhoto && (
                 <div className="flex sm:space-x-4 sm:flex-row flex-col">
-                  {/* <div>
+                  <div>
                     <h2 className="mb-1 font-medium text-lg">Original Room</h2>
                     <Image
                       alt="original photo"
@@ -199,19 +201,19 @@ export default function DreamPage() {
                       width={475}
                       height={475}
                     />
-                  </div> */}
+                  </div>
                   <div className="sm:mt-0 mt-8">
                     <h2 className="mb-1 font-medium text-lg">
                       Generated Image
                     </h2>
                     <a href={restoredImage} target="_blank" rel="noreferrer">
-                      <Image
+                      <img
                         alt="restored photo"
                         src={restoredImage}
                         className="rounded-2xl relative sm:mt-0 mt-2 cursor-zoom-in w-full h-96"
                         width={475}
                         height={475}
-                        onLoadingComplete={() => setRestoredLoaded(true)}
+                        // onLoadingComplete={() => setRestoredLoaded(true)}
                       />
                     </a>
                   </div>
@@ -220,9 +222,10 @@ export default function DreamPage() {
               {loading && (
                 <button
                   disabled
-                  className="bg-blue-500 rounded-full text-white font-medium px-4 pt-2 pb-3 mt-8 w-40">
+                  className="bg-primary rounded-full font-medium px-4 pt-2 pb-3 mt-8 w-40">
                   <span className="pt-4">
                     <LoadingDots color="white" style="large" />
+                    this can take a while
                   </span>
                 </button>
               )}
