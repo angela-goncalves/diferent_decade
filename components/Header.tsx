@@ -1,15 +1,8 @@
 "use client";
 import Image from "next/image";
-import { Moon, Sun } from "lucide-react";
-import { Button } from "./ui/button";
-import { useTheme } from "next-themes";
-import { useState } from "react";
 import { LinkCust } from "./ui/link";
 
 export default function Header() {
-  const { setTheme } = useTheme();
-  const [darkMode, setDarkMode] = useState<boolean>(false);
-
   return (
     <header className="flex xs:flex-row justify-between items-center w-full mt-3 border-b pb-7 sm:px-4 px-2 border-gray-500 gap-2">
       <LinkCust href="/" className="flex space-x-2">
@@ -32,26 +25,6 @@ export default function Header() {
         <Github />
         <p>Star on GitHub</p>
       </LinkCust>
-      {!darkMode && (
-        <Button
-          size="icon"
-          onClick={() => {
-            setTheme("light");
-            setDarkMode(true);
-          }}>
-          <Sun className="h-[1.2rem] w-[1.2rem]" />
-        </Button>
-      )}
-      {darkMode && (
-        <Button
-          size="icon"
-          onClick={() => {
-            setTheme("dark");
-            setDarkMode(false);
-          }}>
-          <Moon className="h-[1.2rem] w-[1.2rem]" />
-        </Button>
-      )}
     </header>
   );
 }

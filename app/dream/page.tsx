@@ -7,8 +7,6 @@ import { UrlBuilder } from "@bytescale/sdk";
 import { UploadWidgetConfig } from "@bytescale/upload-widget";
 import { UploadDropzone } from "@bytescale/upload-widget-react";
 import { CompareSlider } from "../../components/CompareSlider";
-import Footer from "../../components/Footer";
-import Header from "../../components/Header";
 import LoadingDots from "../../components/LoadingDots";
 import ResizablePanel from "../../components/ResizablePanel";
 import Toggle from "../../components/Toggle";
@@ -16,31 +14,7 @@ import appendNewToName from "../../utils/appendNewToName";
 import downloadPhoto from "../../utils/downloadPhoto";
 import DropDown from "../../components/DropDown";
 import { genderType, genders } from "../../utils/dropdownTypes";
-import { useTheme } from "next-themes";
-
-const options: UploadWidgetConfig = {
-  apiKey: !!process.env.NEXT_PUBLIC_UPLOAD_API_KEY
-    ? process.env.NEXT_PUBLIC_UPLOAD_API_KEY
-    : "free",
-  maxFileCount: 1,
-  mimeTypes: ["image/jpeg", "image/png", "image/jpg"],
-  editor: { images: { crop: false } },
-  styles: {
-    colors: {
-      primary: "#B736F3", // Primary buttons & links
-      error: "#d23f4d", // Error messages
-      shade100: "#fff", // Standard text
-      shade200: "#fffe", // Secondary button text
-      shade300: "#fffd", // Secondary button text (hover)
-      shade400: "#fffc", // Welcome text
-      shade500: "#fff9", // Modal close button
-      shade600: "#1C19C6", // Border
-      shade700: "#fff2", // Progress indicator background
-      shade800: "#fff1", // File item background
-      shade900: "#ffff", // Various (draggable crop buttons, etc.)
-    },
-  },
-};
+import { Button } from "../../components/ui/button";
 
 export default function DreamPage() {
   const [originalPhoto, setOriginalPhoto] = useState<string | null>(null);
@@ -51,15 +25,39 @@ export default function DreamPage() {
   const [error, setError] = useState<string | null>(null);
   const [photoName, setPhotoName] = useState<string | null>(null);
   const [gender, setGender] = useState<genderType>("Woman");
-  const { setTheme } = useTheme();
-  const [darkMode, setDarkMode] = useState<boolean>(false);
+
+  const options: UploadWidgetConfig = {
+    apiKey: !!process.env.NEXT_PUBLIC_UPLOAD_API_KEY
+      ? process.env.NEXT_PUBLIC_UPLOAD_API_KEY
+      : "free",
+    maxFileCount: 1,
+    mimeTypes: ["image/jpeg", "image/png", "image/jpg"],
+    editor: { images: { crop: false, preview: true } },
+    styles: {
+      colors: {
+        primary: "#F262E4", // Primary buttons & links
+        error: "#d23f4d", // Error messages
+        shade100: "#000000", // Standard text
+        shade200: "#fffe", // Secondary button text
+        shade300: "#fffd", // Secondary button text (hover)
+        shade400: "#fffc", // Welcome text
+        shade500: "#fff9", // Modal close button
+        shade600: "#F7F032", // Border
+        shade700: "#fff2", // Progress indicator background
+        shade800: "#fff1", // File item background
+        shade900: "#ffff", // Various (draggable crop buttons, etc.)
+      },
+    },
+    showFinishButton: true,
+  };
 
   const UploadDropZone = () => (
     <UploadDropzone
       options={options}
-      onUpdate={({ uploadedFiles }) => {
-        if (uploadedFiles.length !== 0) {
-          const image = uploadedFiles[0];
+      width="670px"
+      onComplete={(originalFile) => {
+        if (originalFile.length !== 0) {
+          const image = originalFile[0];
           const imageName = image.originalFile.originalFileName;
           const imageUrl = UrlBuilder.url({
             accountId: image.accountId,
@@ -74,45 +72,49 @@ export default function DreamPage() {
           generatePhoto(imageUrl);
         }
       }}
-      width="670px"
       height="250px"
     />
   );
 
   async function generatePhoto(fileUrl?: string) {
-    await new Promise((resolve) => setTimeout(resolve, 200));
-    setLoading(true);
-    const res = await fetch("/generate", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ originalPhoto: fileUrl, theme: gender }),
-    });
-    let newPhoto = await res.json();
-    if (res.status !== 200) {
-      setError(newPhoto);
-    } else {
-      console.log("newPhoto", newPhoto);
-      setRestoredImage(newPhoto);
-    }
-    setTimeout(() => {
+    try {
+      setLoading(true);
+      await new Promise((resolve) => setTimeout(resolve, 200));
+
+      const res = await fetch("/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ originalPhoto: fileUrl, theme: gender }),
+      });
+
+      let newPhoto = await res.json();
+
+      if (res.status !== 200) {
+        setError(newPhoto);
+      } else {
+        setRestoredImage(newPhoto);
+        setRestoredLoaded(true);
+      }
+    } catch (error) {
+      setError("oops! something wrong happened");
+    } finally {
       setLoading(false);
-    }, 1300);
+    }
   }
-  console.log(typeof restoredImage);
+
   return (
-    <div className="flex max-w-6xl mx-auto flex-col items-center justify-center py-2 min-h-screen">
-      <Header />
-      <main className="flex flex-1 w-full flex-col items-center justify-center text-center px-4 mt-4 sm:mb-0 mb-8">
-        <h1 className="mx-auto max-w-4xl font-display text-4xl font-bold tracking-normal sm:text-6xl mb-5">
+    <div className="flex flex-col items-center justify-center py-2 min-h-screen">
+      <main className="flex flex-1 w-full flex-col items-center justify-center text-center px-4 mt-4 sm:mb-0 mb-8 ">
+        <h1 className="mx-auto max-w-2xl font-display text-4xl font-bold tracking-normal sm:text-6xl mb-5">
           Generate your photo in{" "}
-          <span className="text-secondary">80s style</span>
+          <span className="text-[#F7F032]">80s style</span>
         </h1>
         <ResizablePanel>
           <AnimatePresence mode="wait">
-            <motion.div className="flex justify-between items-center w-full flex-col mt-4">
-              {!restoredImage && (
+            <motion.div className="flex w-full justify-between items-center flex-col mt-4 ">
+              {!originalPhoto && (
                 <>
                   <div className="space-y-4 w-full max-w-sm">
                     <div className="flex mt-3 items-center space-x-3">
@@ -132,12 +134,6 @@ export default function DreamPage() {
                       genders={genders}
                     />
                   </div>
-                  {/* <Button
-                    onClick={() => generatePhoto()}
-                    className="bg-blue-600 self-center text-lg rounded-xl text-white font-medium px-10 py-8 mt-8 hover:bg-blue-500 transition">
-                    generate your image
-                  </Button>
-                  <h2>or...</h2> */}
                   <div className="mt-4 w-full max-w-sm">
                     <div className="flex mt-6 w-96 items-center space-x-3">
                       <Image
@@ -150,6 +146,9 @@ export default function DreamPage() {
                         Upload your picture.
                       </p>
                     </div>
+                  </div>
+                  <div className="flex flex-col w-full max-w-[600px] mt-2">
+                    <UploadDropZone />
                   </div>
                 </>
               )}
@@ -164,7 +163,6 @@ export default function DreamPage() {
                   restoredLoaded ? "visible mt-6 -ml-8" : "invisible"
                 }`}>
                 <Toggle
-                  className={`${restoredLoaded ? "visible mb-6" : "invisible"}`}
                   sideBySide={sideBySide}
                   setSideBySide={(newVal) => setSideBySide(newVal)}
                 />
@@ -175,25 +173,10 @@ export default function DreamPage() {
                   restored={restoredImage!}
                 />
               )}
-
-              {!restoredImage && (
-                <div className="flex flex-col w-full max-w-[600px]">
-                  <UploadDropZone />
-                </div>
-              )}
-              {originalPhoto && !restoredImage && (
-                <Image
-                  alt="original photo"
-                  src={originalPhoto}
-                  className="rounded-2xl h-96"
-                  width={475}
-                  height={475}
-                />
-              )}
-              {restoredImage && originalPhoto && (
+              {restoredImage && originalPhoto && !sideBySide && (
                 <div className="flex sm:space-x-4 sm:flex-row flex-col">
                   <div>
-                    <h2 className="mb-1 font-medium text-lg">Original Room</h2>
+                    <h2 className="mb-1 font-medium text-lg">Original image</h2>
                     <Image
                       alt="original photo"
                       src={originalPhoto}
@@ -213,60 +196,56 @@ export default function DreamPage() {
                         className="rounded-2xl relative sm:mt-0 mt-2 cursor-zoom-in w-full h-96"
                         width={475}
                         height={475}
-                        // onLoadingComplete={() => setRestoredLoaded(true)}
                       />
                     </a>
                   </div>
                 </div>
               )}
               {loading && (
-                <button
-                  disabled
-                  className="bg-primary rounded-full font-medium px-4 pt-2 pb-3 mt-8 w-40">
-                  <span className="pt-4">
+                <Button disabled>
+                  <span>
                     <LoadingDots color="white" style="large" />
-                    this can take a while
+                    this could take a while
                   </span>
-                </button>
+                </Button>
               )}
               {error && (
                 <div
-                  className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl mt-8"
+                  className="bg-red-100 text-red-700 px-4 py-3 rounded-xl mt-8"
                   role="alert">
-                  <span className="block sm:inline">{error}</span>
+                  <span className="block sm:inline">
+                    {error}ocurrion un error kjhdfkjhfajksndjshak
+                  </span>
                 </div>
               )}
               <div className="flex space-x-2 justify-center">
                 {originalPhoto && !loading && (
-                  <button
+                  <Button
                     onClick={() => {
                       setOriginalPhoto(null);
                       setRestoredImage(null);
                       setRestoredLoaded(false);
                       setError(null);
-                    }}
-                    className="bg-blue-500 rounded-full text-white font-medium px-4 py-2 mt-8 hover:bg-blue-500/80 transition">
+                    }}>
                     Generate New Image
-                  </button>
+                  </Button>
                 )}
                 {restoredLoaded && (
-                  <button
+                  <Button
                     onClick={() => {
                       downloadPhoto(
                         restoredImage!,
                         appendNewToName(photoName!)
                       );
-                    }}
-                    className="bg-white rounded-full text-black border font-medium px-4 py-2 mt-8 hover:bg-gray-100 transition">
+                    }}>
                     Download Generated Image
-                  </button>
+                  </Button>
                 )}
               </div>
             </motion.div>
           </AnimatePresence>
         </ResizablePanel>
       </main>
-      <Footer />
     </div>
   );
 }

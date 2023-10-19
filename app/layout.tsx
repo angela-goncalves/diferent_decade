@@ -1,7 +1,8 @@
 import { Analytics } from "@vercel/analytics/react";
 import { Metadata } from "next";
 import "../styles/globals.css";
-import { ThemeProvider } from "../components/ThemeProvider";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 let title = "Photo Generator";
 let description = "Generate your 80s look ";
@@ -37,16 +38,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange>
-          {" "}
+    <html lang="en">
+      <body className="bg-[#1D1C30] text-white w-full flex justify-center mx-auto">
+        <div className="max-w-6xl">
+          <Header />
           {children}
-        </ThemeProvider>
+          <Footer />
+        </div>
         <Analytics />
       </body>
     </html>

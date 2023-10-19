@@ -1,12 +1,9 @@
 import Image from "next/image";
 import { LinkCust } from "../components/ui/link";
-import Footer from "../components/Footer";
-import Header from "../components/Header";
 
 export default function HomePage() {
   return (
-    <div className="flex max-w-6xl mx-auto flex-col items-center justify-center py-2 min-h-screen bg-background">
-      <Header />
+    <div className="py-2 min-h-screen">
       <main className="flex flex-1 w-full flex-col items-center justify-center text-center px-4 sm:mt-20 mt-20">
         <h1 className="mx-auto max-w-4xl font-display text-5xl font-bold tracking-normal text-pinkCust sm:text-7xl">
           Transport to 80s decade{" "}
@@ -42,7 +39,6 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-        {/* <div className="flex items-center text-lg sm:text-primary"> */}
         <h2 className="max-w-xl text-lg">
           To see how you would look in style of 80s...
         </h2>
@@ -52,7 +48,7 @@ export default function HomePage() {
           href="/dream">
           Generate photo here
         </LinkCust>
-        <div className="flex items-center text-lg sm:mt-10 mt-8">
+        {/* <div className="flex items-center text-lg sm:mt-10 mt-8">
           <h2>If you have your own</h2>
           <LinkCust className="px-1 py-3" href="https://replicate.com/">
             replicate model
@@ -61,10 +57,8 @@ export default function HomePage() {
             press here
           </LinkCust>
           <h2> and train yours</h2>
-        </div>
-        {/* </div> */}
+        </div> */}
       </main>
-      <Footer />
     </div>
   );
 }
