@@ -211,7 +211,7 @@ export default function DreamPage() {
               )}
               {error && (
                 <div
-                  className="bg-red-100 text-red-700 px-4 py-3 rounded-xl mt-8"
+                  className="bg-red-100 text-red-700 px-4 py-3 rounded-xl my-8"
                   role="alert">
                   <span className="block sm:inline">{error}</span>
                 </div>

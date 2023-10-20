@@ -28,9 +28,11 @@ export default function Footer() {
           Vercel.
         </a>
       </div>
-      <div className="flex space-x-4 pb-4 sm:pb-0">
+
+      <div className="flex space-x-4 pb-4 sm:pb-0 text-gray-500">
+        <h3>Forked from</h3>
         <Link
-          href="https://github.com/angela-goncalves/diferent_decade"
+          href="https://github.com/Nutlope/roomGPT"
           className="group"
           aria-label="TaxPal on GitHub">
           <svg
