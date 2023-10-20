@@ -7,10 +7,7 @@ export default function HomePage() {
       <main className="flex flex-1 w-full flex-col items-center justify-center text-center px-4 sm:mt-20 mt-20">
         <h1 className="mx-auto max-w-4xl font-display text-5xl font-bold tracking-normal sm:text-7xl">
           Transport to 80s decade{" "}
-          <span className="relative whitespace-nowrap text-[#F7F032]">
-            <span className="relative">using AI</span>
-          </span>{" "}
-          for everyone.
+          <span className="relative text-[#F7F032]">using AI</span>
         </h1>
 
         <div className="flex justify-between items-center w-full flex-col sm:mt-10 mt-6">

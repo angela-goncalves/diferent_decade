@@ -4,27 +4,26 @@ import { LinkCust } from "./ui/link";
 
 export default function Header() {
   return (
-    <header className="flex xs:flex-row justify-between items-center w-full mt-3 border-b pb-7 sm:px-4 px-2 border-gray-500 gap-2">
+    <header className="flex xs:flex-row justify-between items-center w-full mt-3 border-b py-6 sm:px-4 px-2 border-gray-500 gap-2">
       <LinkCust href="/" className="flex space-x-2">
         <Image
           alt="header text"
           src="/eighty.svg"
           className="sm:w-10 sm:h-10 w-9 h-9"
-          width={24}
-          height={24}
+          width={40}
+          height={40}
         />
-        <h1 className="sm:text-3xl text-xl font-bold ml-2 tracking-tight underline underline-offset-4">
-          diferent-decade.io
-        </h1>
       </LinkCust>
-      <LinkCust
-        className="flex max-w-fit items-center justify-center space-x-2 rounded-full text-xs"
-        href="https://github.com/angela-goncalves/diferent_decade"
-        target="_blank"
-        rel="noopener noreferrer">
-        <Github />
-        <p>Star on GitHub</p>
-      </LinkCust>
+      <div>
+        <LinkCust
+          className="flex max-w-fit items-center justify-center space-x-2 rounded-full text-xs"
+          href="https://github.com/angela-goncalves/diferent_decade"
+          target="_blank"
+          rel="noopener noreferrer">
+          <Github />
+          <p>Star on GitHub</p>
+        </LinkCust>
+      </div>
     </header>
   );
 }

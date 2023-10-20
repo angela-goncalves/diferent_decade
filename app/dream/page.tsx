@@ -107,7 +107,7 @@ export default function DreamPage() {
   return (
     <div className="flex flex-col items-center justify-center py-2 min-h-screen">
       <main className="flex flex-1 w-full flex-col items-center justify-center text-center px-4 mt-4 sm:mb-0 mb-8 ">
-        <h1 className="mx-auto max-w-2xl font-display text-4xl font-bold tracking-normal sm:text-6xl mb-5">
+        <h1 className="mx-auto font-display text-4xl font-bold tracking-normal sm:text-6xl mb-5">
           Generate your photo in{" "}
           <span className="text-[#F7F032]">80s style</span>
         </h1>
