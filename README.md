@@ -1,21 +1,17 @@
-# [RoomGPT](https://roomGPT.io) - redesign your room with AI
+# [diferent_decade](https://diferent-decade.vercel.app/) - generate a photo in 80s decade with AI
 
-This is the previous and open source version of RoomGPT.io (a paid SaaS product). It's the very first version of roomGPT without the auth, payments, or additional features and it's simple to clone, deploy, and play around with.
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Nutlope/roomGPT&env=REPLICATE_API_KEY&project-name=room-GPT&repo-name=roomGPT)
-
-[![Room GPT](./public/screenshot.png)](https://roomGPT.io)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/angela-goncalves/diferent_decade&env=REPLICATE_API_KEY&project-name=diferent_decade&repo-name=diferent_decade)
 
 ## How it works
 
-It uses an ML model called [ControlNet](https://github.com/lllyasviel/ControlNet) to generate variations of rooms. This application gives you the ability to upload a photo of any room, which will send it through this ML Model using a Next.js API route, and return your generated room. The ML Model is hosted on [Replicate](https://replicate.com) and [Bytescale](https://www.bytescale.com/) is used for image storage.
+It uses an SDXL model called [stability-ai/sdxl](https://replicate.com/stability-ai/sdxl) trained with images from the 80s to generate images and then it uses a [faceswap](https://replicate.com/lucataco/faceswap) to give you a photo of you dress like in the 80s. This application gives you the ability to upload a photo of you, which will send it through this ML Model using a Next.js API route, and generated your image. The ML Model is hosted on [Replicate](https://replicate.com) and [Bytescale](https://www.bytescale.com/) is used for image storage.
 
 ## Running Locally
 
 ### Cloning the repository the local machine.
 
 ```bash
-git clone https://github.com/Nutlope/roomGPT
+git clone (https://github.com/angela-goncalves/diferent_decade.git)
 ```
 
 ### Creating a account on Replicate to get an API key.
@@ -48,7 +44,7 @@ npm run dev
 
 Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=vercel-examples):
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Nutlope/roomGPT&env=REPLICATE_API_KEY&project-name=room-GPT&repo-name=roomGPT)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/angela-goncalves/diferent_decade&env=REPLICATE_API_KEY&project-name=diferent_decade&repo-name=diferent_decade)
 
 ## License
 
