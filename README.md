@@ -2,6 +2,12 @@
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/angela-goncalves/diferent_decade&env=REPLICATE_API_KEY&project-name=diferent_decade&repo-name=diferent_decade)
 
+
+
+https://github.com/angela-goncalves/diferent_decade/assets/66344422/e9f691ab-94e5-4a3d-b563-10e3bb00b640
+
+
+
 ## How it works
 
 It uses an SDXL model called [stability-ai/sdxl](https://replicate.com/stability-ai/sdxl) trained with images from the 80s to generate images and then it uses a [faceswap](https://replicate.com/lucataco/faceswap) to give you a photo of you dress like in the 80s. This application gives you the ability to upload a photo of you, which will send it through this ML Model using a Next.js API route, and generated your image. The ML Model is hosted on [Replicate](https://replicate.com) and [Bytescale](https://www.bytescale.com/) is used for image storage.
