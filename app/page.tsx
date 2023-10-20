@@ -5,9 +5,9 @@ export default function HomePage() {
   return (
     <div className="py-2 min-h-screen">
       <main className="flex flex-1 w-full flex-col items-center justify-center text-center px-4 sm:mt-20 mt-20">
-        <h1 className="mx-auto max-w-4xl font-display text-5xl font-bold tracking-normal text-pinkCust sm:text-7xl">
+        <h1 className="mx-auto max-w-4xl font-display text-5xl font-bold tracking-normal sm:text-7xl">
           Transport to 80s decade{" "}
-          <span className="relative whitespace-nowrap text-secondary">
+          <span className="relative whitespace-nowrap text-[#F7F032]">
             <span className="relative">using AI</span>
           </span>{" "}
           for everyone.
@@ -39,25 +39,12 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-        <h2 className="max-w-xl text-lg">
-          To see how you would look in style of 80s...
-        </h2>
         <LinkCust
           variant="button"
           className="font-medium px-4 py-3 text-xl"
           href="/dream">
           Generate photo here
         </LinkCust>
-        {/* <div className="flex items-center text-lg sm:mt-10 mt-8">
-          <h2>If you have your own</h2>
-          <LinkCust className="px-1 py-3" href="https://replicate.com/">
-            replicate model
-          </LinkCust>
-          <LinkCust className="px-1 py-3" href="/train">
-            press here
-          </LinkCust>
-          <h2> and train yours</h2>
-        </div> */}
       </main>
     </div>
   );
