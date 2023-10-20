@@ -5,10 +5,6 @@ import React, { useState } from "react";
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import Link from "next/link";
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
-// import { Uploader } from "uploader";
-// import { UploadDropzone } from "react-uploader";
 
 export default function uploadImg() {
   const [error, setError] = useState("");
@@ -41,25 +37,23 @@ export default function uploadImg() {
   }
 
   return (
-    <div>
-      <Header />
-      <main className="flex flex-1 w-full flex-col items-center justify-center text-center px-4 mt-4 sm:mb-0 mb-8">
-        <h1 className="mx-auto max-w-4xl font-display text-4xl font-bold tracking-normal text-slate-100 sm:text-6xl mb-5">
-          Train your model in{" "}
-          <span className="text-blue-600">diferent-decade.io</span>
-        </h1>
-        <h2 className="text-xl">
-          You need to create your model on{" "}
-          <Link
-            className="underline underline-offset-4"
-            href="https://replicate.com/models">
-            Replicate
-          </Link>{" "}
-          first
-        </h2>
+    <main className="flex flex-1 w-full flex-col items-center justify-center text-center px-4 mt-4 sm:mb-0 mb-8">
+      <h1 className="mx-auto max-w-4xl font-display text-4xl font-bold tracking-normal text-slate-100 sm:text-6xl mb-5">
+        Train your model in{" "}
+        <span className="text-blue-600">diferent-decade.io</span>
+      </h1>
+      <h2 className="text-xl">
+        You need to create your model on{" "}
+        <Link
+          className="underline underline-offset-4"
+          href="https://replicate.com/models">
+          Replicate
+        </Link>{" "}
+        first
+      </h2>
 
-        <label> Enter your zip url </label>
-        {/* <Input
+      <label> Enter your zip url </label>
+      {/* <Input
         type="password"
         className="w-80 text-black"
         value={imageZipUrl}
@@ -101,21 +95,19 @@ export default function uploadImg() {
         width="600px"
         height="375px"
       />*/}
-        <Input
-          type="text"
-          className="w-80 text-white font-bold"
-          value={imageZipUrl}
-          onChange={(e) => setImageZipUrl(e.target.value)}
-          placeholder="https://example.com/your-images.zip"
-        />
-        <Button
-          onClick={TrainPhoto}
-          className="bg-blue-600 self-center text-lg rounded-xl text-white font-medium px-10 py-8 mt-8 hover:bg-blue-500 transition">
-          {!loadingTraining ? <h3>submit training</h3> : <h3>wait training</h3>}
-        </Button>
-        <div>{JSON.stringify(trainingResponse)}</div>
-        <Footer />
-      </main>
-    </div>
+      <Input
+        type="text"
+        className="w-80 text-white font-bold"
+        value={imageZipUrl}
+        onChange={(e) => setImageZipUrl(e.target.value)}
+        placeholder="https://example.com/your-images.zip"
+      />
+      <Button
+        onClick={TrainPhoto}
+        className="bg-blue-600 self-center text-lg rounded-xl text-white font-medium px-10 py-8 mt-8 hover:bg-blue-500 transition">
+        {!loadingTraining ? <h3>submit training</h3> : <h3>wait training</h3>}
+      </Button>
+      <div>{JSON.stringify(trainingResponse)}</div>
+    </main>
   );
 }

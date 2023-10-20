@@ -213,9 +213,7 @@ export default function DreamPage() {
                 <div
                   className="bg-red-100 text-red-700 px-4 py-3 rounded-xl mt-8"
                   role="alert">
-                  <span className="block sm:inline">
-                    {error}ocurrion un error kjhdfkjhfajksndjshak
-                  </span>
+                  <span className="block sm:inline">{error}</span>
                 </div>
               )}
               <div className="flex space-x-2 justify-center">
