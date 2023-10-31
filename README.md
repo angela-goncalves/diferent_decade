@@ -1,4 +1,4 @@
-# [diferent_decade](https://diferent-decade.vercel.app/) - generate a photo in 80s decade with AI
+# diferent_decade - generate a photo in 80s decade with AI
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/angela-goncalves/diferent_decade&env=REPLICATE_API_KEY&project-name=diferent_decade&repo-name=diferent_decade)
 
