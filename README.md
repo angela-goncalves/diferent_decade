@@ -9,8 +9,8 @@ https://github.com/angela-goncalves/diferent_decade/assets/66344422/e9f691ab-94e
 
 
 ## How it works
-
-It uses an SDXL model called [stability-ai/sdxl](https://replicate.com/stability-ai/sdxl) trained with images from the 80s to generate images and then it uses a [faceswap](https://replicate.com/lucataco/faceswap) to give you a photo of you dress like in the 80s. This application gives you the ability to upload a photo of you, which will send it through this ML Model using a Next.js API route, and generated your image. The ML Model is hosted on [Replicate](https://replicate.com) and [Bytescale](https://www.bytescale.com/) is used for image storage.
+### Create a photo of **yourself dressed like in the 80s**!! <br/>
+It uses an SDXL model called [stability-ai/sdxl](https://replicate.com/stability-ai/sdxl) trained with images from the 80s decade and then, it uses a [faceswap](https://replicate.com/lucataco/faceswap) to give you a photo of **yourself dressed like in the 80s**. This application gives you the ability to upload a photo of you, which will send it through this ML Model using a Next.js API route, and generated your image. The ML Model is hosted on [Replicate](https://replicate.com) and [Bytescale](https://www.bytescale.com/) is used for image storage.
 
 ## Running Locally
 
